@@ -1,0 +1,37 @@
+version: 2.1
+
+jobs:
+  persist:
+    parameters:
+      parallel:
+        type: integer
+      filesize_gb:
+        type: integer
+    docker:
+      - image: cimg/base:current
+    resource_class: xlarge
+    parallelism: << parameters.parallel >>
+    steps:
+      - run:
+          name: Generate file of << parameters.filesize_gb >> GB
+          command: |
+            head -c $((<< parameters.filesize_gb >>*1073741824)) /dev/urandom > sample.txt
+
+            ls -lah sample.txt
+      - persist_to_workspace:
+          root: .
+          paths:
+            - sample.txt
+
+workflows:
+  file_already_closed:
+    jobs:
+      - persist:
+          matrix:
+            parameters:
+              parallel:
+                - 5
+              filesize_gb:
+                - 8
+                - 5
+                - 4
