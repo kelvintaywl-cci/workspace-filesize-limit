@@ -5,7 +5,7 @@ jobs:
     parameters:
       parallel:
         type: integer
-      filesize_gb:
+      filesize_mb:
         type: integer
     docker:
       - image: cimg/base:current
@@ -13,9 +13,9 @@ jobs:
     parallelism: << parameters.parallel >>
     steps:
       - run:
-          name: Generate file of << parameters.filesize_gb >> GB
+          name: Generate file of << parameters.filesize_mb >> MB
           command: |
-            head -c $((<< parameters.filesize_gb >>*1073741824)) /dev/urandom > sample.txt
+            head -c $((<< parameters.filesize_mb >>*1048576)) /dev/urandom > sample.txt
 
             ls -lah sample.txt
       - persist_to_workspace:
@@ -30,8 +30,11 @@ workflows:
           matrix:
             parameters:
               parallel:
-                - 5
-              filesize_gb:
-                - 8
-                - 5
-                - 4
+                - 3
+              filesize_mb:
+                # 4.5 GB
+                - 4608
+                # 4.75 GB
+                - 4864
+                # 4.875 GB
+                - 4992
