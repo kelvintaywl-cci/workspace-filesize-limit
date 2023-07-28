@@ -32,9 +32,15 @@ workflows:
               parallel:
                 - 3
               filesize_mb:
-                # 4.5 GB
-                - 4608
-                # 4.75 GB
-                - 4864
-                # 4.875 GB
-                - 4992
+                # NOTE: 5 GB = 5120 MB
+                # ---
+                # 4.5 GB passed
+                # 4.75 GB passed
+                # 4.875 GB passed
+                # ---
+                # 4.9 GB
+                - 5018
+                # 4.95 GB
+                - 5068
+                # 4.99 GB
+                - 5110
